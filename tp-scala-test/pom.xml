@@ -8,9 +8,7 @@
 		<artifactId>test-projects</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<groupId>test-projects</groupId>
 	<artifactId>scala-test</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<name>scala-test</name>
 	<url>http://maven.apache.org</url>
 	<properties>
