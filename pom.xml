@@ -6,5 +6,6 @@
   <packaging>pom</packaging>
   <modules>
   	<module>mllib-test</module>
+  	<module>scala-test</module>
   </modules>
 </project>
