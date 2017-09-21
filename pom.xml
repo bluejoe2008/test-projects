@@ -5,7 +5,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <modules>
-  	<module>mllib-test</module>
-  	<module>scala-test</module>
+  	<module>tp-mllib-test</module>
+  	<module>tp-scala-test</module>
   </modules>
 </project>
