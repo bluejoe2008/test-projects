@@ -1,1 +1,8 @@
 /target/
+/tp-graph-test/testdb/
+/tp-graph-test/target/
+/tp-graph-test/bin/
+/tp-graph-test/.settings/
+/tp-jena-test/.idea/
+/tp-jena-test/target/
+/.idea/

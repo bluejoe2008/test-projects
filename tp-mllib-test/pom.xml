@@ -5,10 +5,10 @@
   <parent>
     <groupId>test-projects</groupId>
     <artifactId>test-projects</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
   </parent>
-  <artifactId>mllib-test</artifactId>
-  <name>mllib-test</name>
+  <artifactId>tp-mllib-test</artifactId>
+  <name>tp-mllib-test</name>
   <url>http://maven.apache.org</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
