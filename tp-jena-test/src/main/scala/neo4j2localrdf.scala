@@ -1,6 +1,7 @@
 package honglou
 
 import java.io.File
+
 import org.apache.jena.query.ReadWrite
 import org.apache.jena.rdf.model.Model
 import org.apache.jena.tdb.TDBFactory
@@ -18,11 +19,11 @@ object neo4j2localrdf {
       val neo4jPath = args(0);
       val tdbPath = args(1);
 
-      new File(tdbPath).mkdirs();
-
       println(s"neo4j-dir: $neo4jPath, tdb-dir: $tdbPath");
 
       val graphDb = new GraphDatabaseFactory().newEmbeddedDatabase(new File(neo4jPath));
+
+      new File(tdbPath).mkdirs();
       val dataset = TDBFactory.createDataset(tdbPath);
       dataset.begin(ReadWrite.WRITE);
 
