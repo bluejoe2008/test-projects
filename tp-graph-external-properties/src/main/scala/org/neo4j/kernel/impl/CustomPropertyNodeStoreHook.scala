@@ -11,8 +11,6 @@ import scala.collection.JavaConversions._
   * Created by bluejoe on 2019/10/6.
   */
 class CustomPropertyNodeStoreHook extends TransactionHook[TransactionHook.Outcome] {
-  val _propertyNodeStore: CustomPropertyNodeStore = CustomPropertyNodeStoreHolder.get
-
   override def afterRollback(state: ReadableTransactionState, transaction: KernelTransaction, outcome: TransactionHook.Outcome): Unit = {
     //discard update
   }
@@ -41,7 +39,7 @@ class CustomPropertyNodeStoreHook extends TransactionHook[TransactionHook.Outcom
       }).toList
 
       if (!docsToBeAdded.isEmpty) {
-        _propertyNodeStore.addNodes(docsToBeAdded);
+        CustomPropertyNodeStoreHolder.get.addNodes(docsToBeAdded);
       }
 
       //delete removed nodes
@@ -51,7 +49,7 @@ class CustomPropertyNodeStoreHook extends TransactionHook[TransactionHook.Outcom
       }).toList
 
       if (!docsToBeDeleted.isEmpty) {
-        _propertyNodeStore.deleteNodes(docsToBeDeleted)
+        CustomPropertyNodeStoreHolder.get.deleteNodes(docsToBeDeleted)
       }
 
       //TODO: update modified nodes

@@ -9,7 +9,7 @@ import scala.collection.JavaConversions._
 /**
   * Created by bluejoe on 2019/10/7.
   */
-class InSolrPropertiesStore extends CustomPropertyNodeStore {
+class InSolrPropertyNodeStore extends CustomPropertyNodeStore {
   var _solrClient: Option[CloudSolrClient] = None;
 
   override def deleteNodes(docsToBeDeleted: Iterable[Long]): Unit = {

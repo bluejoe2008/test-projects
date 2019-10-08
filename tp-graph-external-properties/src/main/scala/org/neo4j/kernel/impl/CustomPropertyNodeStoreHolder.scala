@@ -6,10 +6,18 @@ import org.neo4j.cypher.internal.runtime.interpreted.NodeFieldPredicate
   * Created by bluejoe on 2019/10/7.
   */
 object CustomPropertyNodeStoreHolder {
-  val _propertyNodeStore = new LoggingPropertiesStore(new InMemoryPropertiesStore());
-  _propertyNodeStore.init();
+  var _propertyNodeStore: Option[CustomPropertyNodeStore] = None;
 
-  def get = _propertyNodeStore;
+  def hold(propertyNodeStore: CustomPropertyNodeStore): Unit = {
+    _propertyNodeStore = Some(propertyNodeStore);
+    propertyNodeStore.init();
+  }
+
+  def get: CustomPropertyNodeStore = _propertyNodeStore.get;
+}
+
+object Settings {
+  var _hook_enabled = false;
 }
 
 class LoggingPropertiesStore(source: CustomPropertyNodeStore) extends CustomPropertyNodeStore {
@@ -29,8 +37,9 @@ class LoggingPropertiesStore(source: CustomPropertyNodeStore) extends CustomProp
   }
 
   override def filterNodes(expr: NodeFieldPredicate): Iterable[CustomPropertyNode] = {
-    println(s"filterNodes: $expr")
-    source.filterNodes(expr)
+    val ir = source.filterNodes(expr)
+    println(s"filterNodes(expr=$expr): $ir")
+    ir;
   }
 
   override def updateNodes(docsToUpdated: Iterable[CustomPropertyNodeModification]): Unit = {

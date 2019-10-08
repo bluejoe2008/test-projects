@@ -8,6 +8,7 @@ import org.junit.{Before, Test}
 import org.neo4j.graphdb.factory.GraphDatabaseFactory
 import org.neo4j.graphdb.{Label, RelationshipType}
 import org.neo4j.io.fs.FileUtils
+import org.neo4j.kernel.impl.{CustomPropertyNodeStoreHolder, InMemoryPropertyNodeStore, LoggingPropertiesStore, Settings}
 
 class QueryTest {
   @Before
@@ -20,7 +21,7 @@ class QueryTest {
     //create a node
     val node1 = db.createNode();
 
-    node1.setProperty("name", "bob");
+    node1.setProperty("name", "bluejoe");
     node1.setProperty("age", 40);
     node1.addLabel(new Label {
       override def name(): String = "person"
@@ -33,6 +34,7 @@ class QueryTest {
     node2.addLabel(new Label {
       override def name(): String = "person"
     })
+
     node2.createRelationshipTo(node1, new RelationshipType {
       override def name(): String = "dad"
     });
@@ -44,6 +46,18 @@ class QueryTest {
 
   @Test
   def test1(): Unit = {
+    Settings._hook_enabled = false;
+    _test();
+  }
+
+  @Test
+  def test2(): Unit = {
+    Settings._hook_enabled = true;
+    CustomPropertyNodeStoreHolder.hold(new LoggingPropertiesStore(new InMemoryPropertyNodeStore()));
+    _test();
+  }
+
+  private def _test(): Unit = {
     val db = new GraphDatabaseFactory().newEmbeddedDatabase(new File("./output/testdb"))
 
     val tx = db.beginTx();
@@ -55,7 +69,7 @@ class QueryTest {
     //org.neo4j.cypher.internal.PreParser
     //org.neo4j.cypher.internal.MasterCompiler
     //org.neo4j.cypher.internal.compatibility.v3_5.Cypher35Planner
-    val rs = db.execute("match (n)-[dad]->(m) where 38<m.age return n.name");
+    val rs = db.execute("match (m)-[dad]->(n) where 18>m.age return n.name, m");
     while (rs.hasNext) {
       val row = rs.next();
       println(row);
@@ -64,4 +78,5 @@ class QueryTest {
     tx.success();
     db.shutdown();
   }
+
 }

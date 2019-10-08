@@ -9,7 +9,7 @@ import scala.collection.mutable
 /**
   * Created by bluejoe on 2019/10/7.
   */
-class InMemoryPropertiesStore extends CustomPropertyNodeStore {
+class InMemoryPropertyNodeStore extends CustomPropertyNodeStore {
   val nodes = mutable.Map[Long, CustomPropertyNode]();
 
   def filterNodes(expr: NodeFieldPredicate): Iterable[CustomPropertyNode] = {

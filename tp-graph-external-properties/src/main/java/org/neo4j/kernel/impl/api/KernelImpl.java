@@ -31,6 +31,7 @@ import org.neo4j.kernel.api.proc.CallableUserAggregationFunction;
 import org.neo4j.kernel.api.proc.CallableUserFunction;
 import org.neo4j.kernel.configuration.Config;
 import org.neo4j.kernel.impl.CustomPropertyNodeStoreHook;
+import org.neo4j.kernel.impl.Settings;
 import org.neo4j.kernel.impl.proc.Procedures;
 import org.neo4j.kernel.impl.transaction.TransactionMonitor;
 import org.neo4j.kernel.internal.DatabaseHealth;
@@ -68,7 +69,8 @@ public class KernelImpl extends LifecycleAdapter implements InwardKernel
         this.hooks = hooks;
 
         //NOTE: register hook
-        hooks.register(new CustomPropertyNodeStoreHook());
+        if(Settings._hook_enabled())
+            hooks.register(new CustomPropertyNodeStoreHook());
 
         this.health = health;
         this.transactionMonitor = transactionMonitor;

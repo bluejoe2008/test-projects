@@ -25,7 +25,7 @@ import org.neo4j.cypher.internal.runtime.ProcedureCallMode
 import org.neo4j.cypher.internal.runtime.interpreted.commands.KeyTokenResolver
 import org.neo4j.cypher.internal.runtime.interpreted.commands.convert.PatternConverters._
 import org.neo4j.cypher.internal.runtime.interpreted.commands.convert.{ExpressionConverters, InterpretedCommandProjection}
-import org.neo4j.cypher.internal.runtime.interpreted.commands.expressions.{AggregationExpression, Expression, Literal, ShortestPathExpression}
+import org.neo4j.cypher.internal.runtime.interpreted.commands.expressions.{AggregationExpression, Literal, ShortestPathExpression}
 import org.neo4j.cypher.internal.runtime.interpreted.commands.predicates.{Predicate, True}
 import org.neo4j.cypher.internal.runtime.interpreted.pipes._
 import org.neo4j.cypher.internal.v3_5.ast.semantics.SemanticTable
@@ -34,6 +34,7 @@ import org.neo4j.cypher.internal.v3_5.logical.plans
 import org.neo4j.cypher.internal.v3_5.logical.plans.{ColumnOrder, Limit => LimitPlan, LoadCSV => LoadCSVPlan, Skip => SkipPlan, _}
 import org.neo4j.cypher.internal.v3_5.util.attribution.Id
 import org.neo4j.cypher.internal.v3_5.util.{Eagerly, InternalException}
+import org.neo4j.kernel.impl.Settings
 import org.neo4j.values.AnyValue
 import org.neo4j.values.virtual.{NodeValue, RelationshipValue}
 
@@ -124,9 +125,11 @@ case class InterpretedPipeBuilder(recurse: LogicalPlan => Pipe,
           if (predicate.exprs.size == 1) buildExpression(predicate.exprs.head) else buildExpression(predicate)
 
         //NOTE: push down predicate
-        source match{
-          case x: AllNodesScanPipe =>
-            x.predicatePushDown(predicateExpression);
+        if (Settings._hook_enabled) {
+          source match {
+            case x: AllNodesScanPipe =>
+              x.predicatePushDown(predicateExpression);
+          }
         }
 
         FilterPipe(source, predicateExpression)(id = id)
