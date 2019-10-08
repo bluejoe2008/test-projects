@@ -55,8 +55,7 @@ class QueryTest {
     //org.neo4j.cypher.internal.PreParser
     //org.neo4j.cypher.internal.MasterCompiler
     //org.neo4j.cypher.internal.compatibility.v3_5.Cypher35Planner
-    var rs = db.execute("match (n)-[dad]->(m) where m.age>35 return n.name");
-    rs = db.execute("match (n)-[dad]->(m) where 38<m.age return n.name");
+    val rs = db.execute("match (n)-[dad]->(m) where 38<m.age return n.name");
     while (rs.hasNext) {
       val row = rs.next();
       println(row);
